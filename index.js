@@ -1,8 +1,11 @@
+// Función helper para los popups con botones
+const logName = (name) => {
+  console.log('El nombre es:', name);
+};
+
 const mapId = 'map';
 const initialCoordinates = [40.4169473, -3.7057172]; // Plaza Sol en Madrid [lat, lng]
-
 const map = L.map(mapId).setView(initialCoordinates, 13);
-console.log(map);
 
 // Paso 5 en README.md => Añadir constantes con variables de acceso y cargar Mapbox en nuestro mapa de Leaflet
 const MAPBOX_API =
@@ -27,9 +30,11 @@ L.marker(initialCoordinates)
   .addTo(map);
 
 const plazaMayorCoordinates = [40.415511, -3.7095896];
+const name = 'Plaza Mayor';
 L.marker(plazaMayorCoordinates)
-  .bindPopup('<b>Plaza Mayor</b><br>Posición adicional')
-  .addTo(map);
+  .bindPopup(`<b>${name}</b><br>Posición adicional`)
+  .addTo(map)
+  .on('click', () => logName(name));
 
 // Sección 2. Añadimos Mapbox Places
 const MAPBOX_PLACES_API = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
@@ -62,7 +67,7 @@ function changeMapCenter(searchLocation) {
       const { coordinates, name } = getCoordinates(apiData);
 
       // Centramos el mapa en el nuevo lugar
-      map.panTo(coordinates);
+      map.flyTo(coordinates);
       // Añadimos un marker con el nombre del sitio
       L.marker(coordinates).bindPopup(`<b>${name}</b>`).addTo(map);
     });
